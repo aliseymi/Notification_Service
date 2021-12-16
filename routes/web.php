@@ -2,6 +2,8 @@
 
 use App\Mail\TopicCreated;
 use App\Mail\UserRegistered;
+use App\Models\User;
+use App\Services\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -17,5 +19,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    Mail::to('ali@gmail.com')->send(new TopicCreated());
+    $notification = resolve(Notification::class);
+//    $notification->sendEmail(User::find(1), new TopicCreated());
+
+    $text = 'سلام،این یک پیامک تستی است';
+    $notification->sendSms(User::find(1), $text);
 });
