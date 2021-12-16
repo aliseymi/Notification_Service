@@ -3,36 +3,30 @@
 namespace App\Services\Notifications;
 
 use App\Models\User;
-use Ghasedak\Exceptions\ApiException;
-use Ghasedak\Exceptions\HttpException;
-use Ghasedak\GhasedakApi;
+use App\Services\Notifications\Providers\Contracts\Provider;
 use Illuminate\Contracts\Mail\Mailable;
-use Illuminate\Support\Facades\Mail;
+
+/**
+ * @method sendEmail(User $user, Mailable $mailable)
+ * @method sendSms(User $user, string $text)
+ */
 
 class Notification
 {
-    public function sendEmail(User $user, Mailable $mailable)
+    public function __call($name, $arguments)
     {
-        return Mail::to($user)->send($mailable);
-    }
+        $providerPath = __NAMESPACE__ . '\Providers\\' . substr($name, 4) . 'Provider';
 
-    public function sendSms(User $user, string $text)
-    {
-        try {
-            $receptor = $user->phone_number;
-            $line_number = config('services.ghasedakSms.line_number');
-            $api_key = config('services.ghasedakSms.key');
-
-            $api = new GhasedakApi($api_key);
-            $api->SendSimple(
-                $receptor,  // receptor
-                $text, // message
-                $line_number    // choose a line number from your account
-            );
-        } catch (ApiException $e) {
-            throw $e;
-        } catch (HttpException $e) {
-            throw $e;
+        if(!class_exists($providerPath)){
+            throw new \Exception("Class $providerPath does not exists!");
         }
+
+        $providerInstance = new $providerPath(...$arguments);
+
+        if(!is_subclass_of($providerInstance, Provider::class)){
+            throw new \Exception("Class must implements \App\Services\Notifications\Providers\Contracts\Provider");
+        }
+
+        $providerInstance->send();
     }
 }
