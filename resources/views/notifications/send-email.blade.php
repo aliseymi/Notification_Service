@@ -10,8 +10,20 @@
                     {{ __('notification.send-email') }}
                 </div>
                 <div class="card-body">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-                    <form action="" method="POST">
+                    @if(session('failed'))
+                        <div class="alert alert-danger">
+                           {{ session('failed') }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('notification.send.email') }}" method="POST">
+                        @csrf
                         <div class="form-group ">
                             <label for="user">@lang('notification.users')</label>
                             <select name="user" class="form-control" id="user">
@@ -29,6 +41,15 @@
                             </select>
                         </div>
 
+                        @if($errors->any())
+                            <div class="small mb-2">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li class="text-danger">{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <button type="submit" class="btn btn-info">@lang('notification.send')</button>
                     </form>
                 </div>

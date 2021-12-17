@@ -18,7 +18,7 @@ class Notification
         $providerPath = __NAMESPACE__ . '\Providers\\' . substr($name, 4) . 'Provider';
 
         if(!class_exists($providerPath)){
-            throw new \Exception("Class $providerPath does not exists!");
+            throw new \Exception("Class $providerPath does not exist!");
         }
 
         $providerInstance = new $providerPath(...$arguments);
