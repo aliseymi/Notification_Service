@@ -38,4 +38,18 @@ class NotificationsController extends Controller
             return back()->with('failed', __('notification.email_has_problem'));
         }
     }
+
+    /**
+     * show sms form
+     */
+    public function sms()
+    {
+        $users = User::all();
+        return view('notifications.send-sms', compact('users'));
+    }
+
+    public function sendSms(Request $request)
+    {
+        return $request->all();
+    }
 }
