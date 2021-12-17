@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotificationsController;
 use App\Mail\TopicCreated;
 use App\Models\User;
 use App\Services\Notifications\Notification;
@@ -17,12 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-//    $notification = resolve(Notification::class);
-
-    $notification = new Notification();
-
-    $notification->sendEmail(User::find(1), new TopicCreated());
-
-    $text = 'سلام،این یک پیامک تستی است';
-    $notification->sendSms(User::find(1), $text);
+    return view('home');
 });
+
+Route::get('notification/email', [NotificationsController::class, 'email'])->name('notification.form.email');

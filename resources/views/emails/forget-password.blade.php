@@ -1,12 +1,9 @@
 @component('mail::message')
-# User Registered
-
-- list1
-- list2
+# Forget Password
 
 The body of your message.
 
-@component('mail::button', ['url' => url('/'), 'color' => 'success'])
+@component('mail::button', ['url' => ''])
 Button Text
 @endcomponent
 
