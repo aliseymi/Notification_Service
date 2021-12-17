@@ -28,13 +28,13 @@
                             <label for="user">@lang('notification.users')</label>
                             <select name="user" class="form-control" id="user">
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    <option {{ old('user') == $user->id ? 'selected' : '' }} value="{{ $user->id }}">{{ $user->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="text">@lang('notification.sms-text')</label>
-                            <textarea name="text" id="text" class="form-control" rows="3"></textarea>
+                            <textarea name="text" id="text" class="form-control" rows="3">{{ old('text') }}</textarea>
                         </div>
 
                         @if($errors->any())

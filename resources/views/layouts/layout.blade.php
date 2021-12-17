@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" href="{{ asset('img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstraprtl-v4.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 

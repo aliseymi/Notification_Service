@@ -3,6 +3,7 @@
 namespace App\Services\Notifications\Providers;
 
 use App\Models\User;
+use App\Services\Notifications\Exceptions\UserDoesNotHaveNumberException;
 use App\Services\Notifications\Providers\Contracts\Provider;
 use Ghasedak\Exceptions\ApiException;
 use Ghasedak\Exceptions\HttpException;
@@ -23,6 +24,9 @@ class SmsProvider implements Provider
     public function send()
     {
         try {
+
+            $this->hasPhone();
+
             $receptor = $this->user->phone_number;
             $line_number = config('services.ghasedakSms.line_number');
             $api_key = config('services.ghasedakSms.key');
@@ -37,6 +41,13 @@ class SmsProvider implements Provider
             throw $e;
         } catch (HttpException $e) {
             throw $e;
+        }
+    }
+
+    protected function hasPhone(): void
+    {
+        if (is_null($this->user->phone_number)) {
+            throw new UserDoesNotHaveNumberException('User does not have phone number');
         }
     }
 }
